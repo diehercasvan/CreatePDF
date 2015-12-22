@@ -21,15 +21,23 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String NAME_FILE_APP = "createpdf";
     private static final String FILE_GENERATED = "MisArchivos";
+    private static String sContentHtml;
+    private static String sContentHtmlCSS;
+    private  static  String sContentHtmlSecond;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sContentHtml="<!DOCTYPE html><html xmlns=\"http://www.w3.org/1999/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /><title>Calculator PDF</title>";
+        sContentHtmlCSS="<style type=\"text/css\">html, body {text-align: center;}#container{width: auto;height: auto;margin: auto;background: transparent !important;text-align: center;padding: 10px;color:#333;}#container h1 {margin: 0;padding: 0;color:white;}#header {width: auto;height:50px;box-shadow: 0px 0px 10px #8c0000;background: #8c0000;margin: auto;}.infoRight {width: 340px;height:50px;background:#CCC;float: right;border: 5px solid #FFF;font-weight:bold;}.infoLeft {width: 340px;height: 50px;background:#CCC;float: left;border: 5px solid #FFF;}.separator {width: auto;height: 30px;}#observations {width: auto;height: auto;background:#FFF;float: left;border: 3px solid #CCC;}#observations p{text-align:left;padding:5px;}#observations h4{text-align:left;padding:5px;}</style>";
+
+
     }
 
     public void createPDFOnClick(View view) {
@@ -55,26 +63,65 @@ public class MainActivity extends AppCompatActivity {
             PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(NameFull));
             //Create  document
             document.open();
-            ;
+
             document.addAuthor("Diego Casallas Vanegas ");
             document.addCreator("KREATOR");
             document.addSubject("Thank you");
             document.addCreationDate();
             document.addTitle("Titule ");
             XMLWorkerHelper xmlWorkerHelper = XMLWorkerHelper.getInstance();
-
-            String htmlToPDF = "<!DOCTYPE html>\n" +
-                    "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
-                    "<head>\n" +
-                    "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n" +
-                    "<title>Documento sin título</title>\n" +
-                    "</head>\n" +
+            ArrayList<String>listData=new ArrayList<>();
+            listData.add("20");
+            listData.add("30");
+            listData.add("40");
+            listData.add("50");
+            sContentHtmlSecond="</head>\n" +
                     "\n" +
                     "<body>\n" +
-                    "<h1>My  PDF create</h1>\n" +
-                    "<p>Test content Daniel  </p>\n" +
+                    "<div  id=\"container\">\n" +
+                    "  <div id=\"header\">\n" +
+                    "    <h1>Title Calculator</h1>\n" +
+                    "  </div>\n" +
+                    "  <div id=\"containerGeneral\">\n" +
+                    "  <div class=\"separator\"></div>\n" +
+                    "  <div class=\"infoRight\">\n" +
+                    "    <p>"+listData.get(0)+"</p>\n" +
+                    "  </div>\n" +
+                    "  <div class=\"infoLeft\">\n" +
+                    "    <p>Riesgo ótimo según edad y sexo :</p>\n" +
+                    "  </div>\n" +
+                    "  <div class=\"separator\"></div>\n" +
+                    "  <div class=\"infoRight\">\n" +
+                    "    <p>"+listData.get(1)+"</p>\n" +
+                    "  </div>\n" +
+                    "  <div class=\"infoLeft\">\n" +
+                    "    <p>Riesgo ótimo según edad y sexo :</p>\n" +
+                    "  </div>\n" +
+                    "  <div class=\"separator\"></div>\n" +
+                    "  <div class=\"infoRight\">\n" +
+                    "    <p>"+listData.get(2)+"</p>\n" +
+                    "  </div>\n" +
+                    "  <div class=\"infoLeft\">\n" +
+                    "    <p>Riesgo ótimo según edad y sexo :</p>\n" +
+                    "  </div>\n" +
+                    "  <div class=\"separator\"></div>\n" +
+                    "  <div class=\"infoRight\">\n" +
+                    "    <p>"+listData.get(3)+"</p>\n" +
+                    "  </div>\n" +
+                    "  <div class=\"infoLeft\" >\n" +
+                    "    <p>Riesgo ótimo según edad y sexo :</p>\n" +
+                    "  </div>\n" +
+                    "  </div>\n" +
+                    "  <div class=\"separator\"></div>\n" +
+                    " <div id=\"observations\">\n" +
+                    " \t<h4>Observaciones</h4>\n" +
+                    "    <p> Riesgo ótimo según edad y sexo :Riesgo ótimo según edad y sexo :Riesgo ótimo según edad y sexo : Observaciones Riesgo ótimo según edad y sexo :Riesgo ótimo según edad y sexo :Riesgo ótimo según edad y sexo :</p>\n" +
+                    "  </div>\n" +
+                    "\n" +
+                    "</div>\n" +
                     "</body>\n" +
-                    "</html>";
+                    "</html>\n";
+            String htmlToPDF = sContentHtml+sContentHtmlCSS+sContentHtmlSecond;
 
             xmlWorkerHelper.parseXHtml(pdfWriter, document, new StringReader(htmlToPDF));
             document.close();
